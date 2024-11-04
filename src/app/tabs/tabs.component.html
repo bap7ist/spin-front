@@ -1,5 +1,4 @@
 <ion-tabs>
-  <ion-router-outlet></ion-router-outlet>
 
   <ion-tab-bar slot="bottom">
     <ion-tab-button class="custom-tab" tab="feed" [routerLink]="['/tabs/feed']">
@@ -12,7 +11,7 @@
 
     <ion-tab-button class="custom-tab" tab="profile" [routerLink]="['/tabs/profile']">
       <ion-avatar>
-        <img [src]="userPhotoUrl || 'assets/default-avatar.png'" />
+        <img [src]="userPhotoUrl$ | async" alt="Profile" />
       </ion-avatar>
     </ion-tab-button>
   </ion-tab-bar>

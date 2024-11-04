@@ -1,42 +1,39 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import {
   IonTabs,
   IonTabBar,
   IonTabButton,
   IonIcon,
   IonAvatar,
-  IonRouterOutlet,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, homeOutline, heart, heartOutline } from 'ionicons/icons';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { homeOutline, heartOutline } from 'ionicons/icons';
+import { map } from 'rxjs/operators';
+import { UserStore } from '../core/stores/user.store';
 
 @Component({
   selector: 'app-tabs',
+  templateUrl: './tabs.component.html',
+  styleUrls: ['./tabs.component.scss'],
   standalone: true,
   imports: [
-    IonRouterOutlet,
     CommonModule,
-    RouterLink,
+    RouterModule,
     IonTabs,
     IonTabBar,
     IonTabButton,
     IonIcon,
     IonAvatar,
   ],
-  templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent {
-  userPhotoUrl = '';
+  userPhotoUrl$ = this.userStore.user$.pipe(
+    map(user => user?.avatar || 'https://ionicframework.com/docs/img/demos/avatar.svg')
+  );
 
-  constructor() {
-    addIcons({
-      home,
-      homeOutline,
-      heart,
-      heartOutline,
-    });
+  constructor(private userStore: UserStore) {
+    addIcons({ homeOutline, heartOutline });
   }
 }

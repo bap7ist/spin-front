@@ -1,10 +1,14 @@
 import { Routes } from '@angular/router';
 import { TabsComponent } from './tabs.component';
+import { UserResolver } from '../core/resolvers/user.resolver';
 
 export const routes: Routes = [
   {
     path: '',
     component: TabsComponent,
+    resolve: {
+      user: UserResolver,
+    },
     children: [
       {
         path: 'feed',

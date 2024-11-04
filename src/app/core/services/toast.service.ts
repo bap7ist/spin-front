@@ -50,7 +50,7 @@ export class ToastService {
     const toast = await this.toastController.create({
       message: options.message,
       duration: options.duration || 3000,
-      position: 'bottom',
+      position: 'top',
       color: this.getToastColor(options.type),
       cssClass: `toast-${options.type}`,
       buttons: [

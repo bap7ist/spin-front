@@ -1,13 +1,56 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title>Profil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  @if (user$ | async; as user) {
+  <div class="avatar-section">
+    <div class="avatar-container" (click)="onChangeAvatar()">
+      <ion-avatar class="avatar">
+        <img
+          [src]="user.avatar || 'https://ionicframework.com/docs/img/demos/avatar.svg'"
+          alt="Photo de profil"
+        />
+      </ion-avatar>
+      <div class="avatar-overlay">
+        <ion-icon name="camera"></ion-icon>
+      </div>
+    </div>
+    <h2>{{ user.firstName || 'Prénom' }} {{ user.lastName || 'Nom' }}</h2>
+  </div>
+
+  <div class="actions-section">
+    <ion-button expand="block" (click)="onEditProfile()" class="edit-button">
+      <ion-icon slot="start" name="create-outline"></ion-icon>
+      Modifier le profil
+    </ion-button>
+
+    <ion-button
+      expand="block"
+      (click)="onLogout()"
+      color="danger"
+      class="logout-button"
+    >
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      Se déconnecter
+    </ion-button>
+  </div>
+  } @else {
+  <div class="loading-state">
+    <ion-skeleton-text
+      animated
+      style="width: 120px; height: 120px; border-radius: 50%; margin: 20px auto"
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="width: 60%; margin: 10px auto"
+    ></ion-skeleton-text>
+    <ion-skeleton-text
+      animated
+      style="width: 80%; margin: 10px auto"
+    ></ion-skeleton-text>
+  </div>
+  }
 </ion-content>

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth.guard';
 import { PublicGuard } from './core/guards/public.guard';
+import { AuthGuard } from './core/guards/auth.guard';
+import { UserResolver } from './core/resolvers/user.resolver';
 
 export const routes: Routes = [
   {

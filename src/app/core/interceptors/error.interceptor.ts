@@ -1,6 +1,10 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { 
+  HttpInterceptorFn, 
+  HttpErrorResponse 
+} from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, mergeMap, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 import { ToastService } from '../services/toast.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
@@ -15,8 +19,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       } else {
         switch (error.status) {
           case 401:
-            errorMessage =
-              error.error.message || 'Email ou mot de passe incorrect';
+            errorMessage = error.error.message || 'Email ou mot de passe incorrect';
             break;
           case 400:
             errorMessage = error.error.message || 'Données invalides';

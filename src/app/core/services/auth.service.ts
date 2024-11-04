@@ -2,32 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { TokenService } from './token.service';
 import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
+import { LoginData, LoginResponse, RegisterData, RegisterResponse } from '../models/auth.model';
+import { User } from '../models/user.model';
 
-interface RegisterData {
+
+
+interface UserProfile {
+  id: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
-}
-
-interface RegisterResponse {
-  token?: string;
-  message?: string;
-}
-
-interface LoginData {
-  email: string;
-  password: string;
-}
-
-interface LoginResponse {
-  token: string;
-  user: {
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-  };
 }
 
 @Injectable({
@@ -36,7 +21,8 @@ interface LoginResponse {
 export class AuthService {
   constructor(
     private http: HttpService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private router:Router
   ) {}
 
   register(userData: RegisterData): Observable<RegisterResponse> {
@@ -55,6 +41,7 @@ export class AuthService {
 
   logout(): void {
     this.tokenService.removeToken();
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
