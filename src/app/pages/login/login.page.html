@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Connexion</h1>
+      <p>Bienvenue sur l'application</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-field">
+        <ion-input
+          label="Email"
+          labelPlacement="floating"
+          type="email"
+          formControlName="email"
+          [clearInput]="true"
+        >
+        </ion-input>
+      </div>
+
+      <div class="form-field">
+        <ion-input
+          label="Mot de passe"
+          labelPlacement="floating"
+          type="password"
+          formControlName="password"
+        >
+        </ion-input>
+      </div>
+
+      <ion-button
+        expand="block"
+        shape="round"
+        type="submit"
+        [disabled]="!loginForm.valid || isLoading"
+      >
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading">Se connecter</span>
+      </ion-button>
+
+      <div class="additional-links">
+        <a href="#">Mot de passe oublié ?</a>
+        <a [routerLink]="['/register']">Créer un compte</a>
+      </div>
+    </form>
+  </div>
+</ion-content>

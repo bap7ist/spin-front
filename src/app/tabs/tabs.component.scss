@@ -1,0 +1,28 @@
+ion-tab-bar {
+  --background: #ffffff;
+  border-top: 1px solid #e0e0e0;
+}
+
+ion-tab-button {
+  --color: #666666 !important;
+  --color-selected: #000000 !important;
+}
+
+// Ciblage spécifique des icônes
+ion-tab-button {
+  ion-icon {
+    color: #666666;
+  }
+
+  &.tab-selected {
+    ion-icon {
+      color: #000000;
+    }
+  }
+}
+
+ion-avatar {
+  width: 24px;
+  height: 24px;
+  margin: auto;
+}

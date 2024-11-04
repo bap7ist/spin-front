@@ -1,0 +1,94 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="register-container">
+    <div class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </div>
+
+    <div class="register-header">
+      <h1>Créer un compte</h1>
+      <p>Rejoignez-nous dès maintenant</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-field">
+        <ion-input
+          label="Prénom"
+          labelPlacement="floating"
+          type="text"
+          fill="outline"
+          formControlName="firstName"
+          placeholder="Votre prénom"
+        >
+        </ion-input>
+      </div>
+
+      <div class="form-field">
+        <ion-input
+          label="Nom"
+          labelPlacement="floating"
+          type="text"
+          fill="outline"
+          formControlName="lastName"
+          placeholder="Votre nom"
+        >
+        </ion-input>
+      </div>
+
+      <div class="form-field">
+        <ion-input
+          label="Email"
+          labelPlacement="floating"
+          type="email"
+          fill="outline"
+          formControlName="email"
+          placeholder="votre@email.com"
+        >
+        </ion-input>
+      </div>
+
+      <div class="form-field">
+        <ion-input
+          label="Mot de passe"
+          labelPlacement="floating"
+          type="password"
+          fill="outline"
+          formControlName="password"
+          placeholder="Minimum 6 caractères"
+        >
+        </ion-input>
+      </div>
+
+      <div class="form-field">
+        <ion-input
+          label="Confirmer le mot de passe"
+          labelPlacement="floating"
+          type="password"
+          fill="outline"
+          formControlName="confirmPassword"
+          placeholder="Retapez votre mot de passe"
+        >
+        </ion-input>
+      </div>
+
+      <ion-button
+        expand="block"
+        shape="round"
+        type="submit"
+        [disabled]="!registerForm.valid || isLoading"
+      >
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading">S'inscrire</span>
+      </ion-button>
+
+      <div class="additional-links">
+        <p>Déjà inscrit ? <a (click)="goBack()">Se connecter</a></p>
+      </div>
+    </form>
+  </div>
+</ion-content>
