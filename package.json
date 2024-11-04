@@ -9,7 +9,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "mobile": "ionic build --configuration mobile && ionic capacitor copy ios && ionic capacitor run ios"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +26,7 @@
     "@capacitor/camera": "^6.1.0",
     "@capacitor/core": "6.1.2",
     "@capacitor/haptics": "6.0.1",
+    "@capacitor/ios": "6.1.2",
     "@capacitor/keyboard": "6.0.2",
     "@capacitor/status-bar": "6.0.1",
     "@ionic/angular": "^8.0.0",
