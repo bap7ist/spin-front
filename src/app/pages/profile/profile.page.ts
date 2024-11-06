@@ -12,10 +12,11 @@ import {
   ActionSheetController,
   IonItem,
   IonLabel,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { Observable, from } from 'rxjs';
-import { switchMap, tap, catchError } from 'rxjs/operators';
+import { Observable, from, throwError } from 'rxjs';
+import { switchMap, tap, catchError, finalize, take } from 'rxjs/operators';
 import { addIcons } from 'ionicons';
 import {
   logOutOutline,
@@ -34,6 +35,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { UserStore } from 'src/app/core/stores/user.store';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { RouterLink } from '@angular/router';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -41,6 +43,7 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonSpinner,
     IonLabel,
     IonItem,
     CommonModule,
@@ -58,12 +61,15 @@ import { RouterLink } from '@angular/router';
 export class ProfilePage {
   user$ = this.userStore.user$;
 
+  public isLoading = false;
+
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private fileService: FileService,
     private userService: UserService,
     private userStore: UserStore,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {
     addIcons({
       camera,
@@ -82,6 +88,7 @@ export class ProfilePage {
   onChangeAvatar(): void {
     from(this.createActionSheet())
       .pipe(
+        take(1),
         switchMap((actionSheet) => from(actionSheet.present())),
         catchError((error) => {
           console.error('Error presenting action sheet:', error);
@@ -120,6 +127,7 @@ export class ProfilePage {
   }
 
   private takePicture(source: CameraSource): void {
+    this.isLoading = true;
     from(
       Camera.getPhoto({
         quality: 90,
@@ -130,19 +138,19 @@ export class ProfilePage {
       })
     )
       .pipe(
+        take(1),
         switchMap((image) => {
           if (!image.dataUrl) {
-            throw new Error('Aucune image sélectionnée');
+            return throwError(() => 'Aucune image sélectionnée');
           }
           return this.fileService.dataUrlToFile(image.dataUrl, 'avatar.jpg');
         }),
         switchMap((file) => this.userService.updateAvatar(file)),
         tap((user) => this.userStore.setUser(user)),
         catchError((error) => {
-          // TODO: Ajouter un service de notification pour afficher l'erreur
-          console.error("Erreur lors de la mise à jour de l'avatar:", error);
-          throw error;
-        })
+          return this.toastService.error(error);
+        }),
+        finalize(() => (this.isLoading = false))
       )
       .subscribe();
   }
@@ -151,6 +159,7 @@ export class ProfilePage {
     this.userService
       .removeAvatar()
       .pipe(
+        take(1),
         tap((user) => this.userStore.setUser(user)),
         catchError((error) => {
           console.error("Erreur lors de la suppression de l'avatar:", error);

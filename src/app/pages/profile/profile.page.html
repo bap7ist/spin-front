@@ -9,6 +9,11 @@
       <!-- Avatar section -->
       <div class="avatar-container">
         <ion-avatar (click)="onChangeAvatar()">
+          @if (isLoading) {
+          <div class="avatar-loader">
+            <ion-spinner name="crescent"></ion-spinner>
+          </div>
+          } @else {
           <img
             [src]="(user$ | async)?.avatar || 'assets/default-avatar.png'"
             alt="Profile"
@@ -16,6 +21,7 @@
           <div class="avatar-overlay">
             <ion-icon name="camera"></ion-icon>
           </div>
+          }
         </ion-avatar>
         <h2>
           {{ (user$ | async)?.firstName }} {{ (user$ | async)?.lastName }}

@@ -1,7 +1,4 @@
-import { 
-  HttpInterceptorFn, 
-  HttpErrorResponse 
-} from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
@@ -19,7 +16,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       } else {
         switch (error.status) {
           case 401:
-            errorMessage = error.error.message || 'Email ou mot de passe incorrect';
+            errorMessage =
+              error.error.message || 'Email ou mot de passe incorrect';
             break;
           case 400:
             errorMessage = error.error.message || 'Données invalides';
@@ -35,9 +33,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      return toastService
-        .error(errorMessage)
-        .pipe(mergeMap(() => throwError(() => errorMessage)));
+      return throwError(() => errorMessage);
     })
   );
 };
