@@ -20,7 +20,9 @@ import {
   IonInput,
   IonButton,
   IonSpinner,
-  ToastController, IonIcon } from '@ionic/angular/standalone';
+  ToastController,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   chevronBackOutline,
@@ -30,10 +32,12 @@ import {
   locationOutline,
   calendarOutline,
 } from 'ionicons/icons';
-import { Observable, finalize, tap } from 'rxjs';
+import { Observable, catchError, finalize, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/models/user.model';
+import { ToastService } from 'src/app/core/services/toast.service';
+import { SubmitButtonComponent } from "../../../../components/submit-button/submit-button.component";
 
 interface PersonalInfoForm {
   firstName: string;
@@ -49,7 +53,8 @@ interface PersonalInfoForm {
   templateUrl: './personal-info.page.html',
   styleUrls: ['./personal-info.page.scss'],
   standalone: true,
-  imports: [IonIcon, 
+  imports: [
+    IonIcon,
     CommonModule,
     ReactiveFormsModule,
     IonHeader,
@@ -65,7 +70,8 @@ interface PersonalInfoForm {
     IonButton,
     IonIcon,
     IonSpinner,
-  ],
+    SubmitButtonComponent
+],
 })
 export class PersonalInfoPage {
   form: FormGroup;
@@ -76,8 +82,8 @@ export class PersonalInfoPage {
     private readonly destroyRef: DestroyRef,
     private readonly fb: FormBuilder,
     private readonly userService: UserService,
-    private readonly toastController: ToastController,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly toastService: ToastService
   ) {
     addIcons({
       chevronBackOutline,
@@ -135,35 +141,13 @@ export class PersonalInfoPage {
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => (this.isLoading = false)),
-          tap({
-            next: () => {
-              this.showToast(
-                'Informations mises à jour avec succès',
-                'success'
-              );
-              this.router.navigate(['/profile']);
-            },
-            error: (error) => {
-              console.error('Erreur lors de la mise à jour:', error);
-              this.showToast('Erreur lors de la mise à jour', 'danger');
-            },
-          })
+          catchError(() => this.toastService.error('Une erreur est survenue')),
+          switchMap(() =>
+            this.toastService.success('Informations mises à jour avec succès')
+          )
         )
         .subscribe();
     }
-  }
-
-  private async showToast(
-    message: string,
-    color: 'success' | 'danger'
-  ): Promise<void> {
-    const toast = await this.toastController.create({
-      message,
-      duration: 3000,
-      color,
-      position: 'bottom',
-    });
-    await toast.present();
   }
 
   goBack() {

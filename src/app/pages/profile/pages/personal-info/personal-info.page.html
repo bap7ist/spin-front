@@ -13,99 +13,89 @@
 
 <ion-content class="ion-padding">
   @if (user$ | async; as user) {
-    <div class="form-card">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <ion-list>
-          <ion-item class="input-item">
-            <ion-icon slot="start" name="person-outline"></ion-icon>
-            <ion-input
-              class="custom-input"
-              label="Prénom"
-              labelPlacement="floating"
-              formControlName="firstName"
-              type="text"
-              fill="outline"
-              required
-            ></ion-input>
-          </ion-item>
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-list>
+        <ion-item class="input-item">
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-input
+            class="custom-input"
+            label="Prénom"
+            labelPlacement="floating"
+            formControlName="firstName"
+            type="text"
+            fill="outline"
+            required
+          ></ion-input>
+        </ion-item>
 
-          <ion-item class="input-item">
-            <ion-icon slot="start" name="person-outline"></ion-icon>
-            <ion-input
-              class="custom-input"
-              label="Nom"
-              labelPlacement="floating"
-              formControlName="lastName"
-              type="text"
-              fill="outline"
-              required
-            ></ion-input>
-          </ion-item>
+        <ion-item class="input-item">
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-input
+            class="custom-input"
+            label="Nom"
+            labelPlacement="floating"
+            formControlName="lastName"
+            type="text"
+            fill="outline"
+            required
+          ></ion-input>
+        </ion-item>
 
-          <ion-item class="input-item">
-            <ion-icon slot="start" name="mail-outline"></ion-icon>
-            <ion-input
-              class="custom-input"
-              label="Email"
-              labelPlacement="floating"
-              formControlName="email"
-              type="email"
-              fill="outline"
-              required
-            ></ion-input>
-          </ion-item>
+        <ion-item class="input-item">
+          <ion-icon slot="start" name="mail-outline"></ion-icon>
+          <ion-input
+            class="custom-input"
+            label="Email"
+            labelPlacement="floating"
+            formControlName="email"
+            type="email"
+            fill="outline"
+            required
+          ></ion-input>
+        </ion-item>
 
-          <ion-item class="input-item">
-            <ion-icon slot="start" name="call-outline"></ion-icon>
-            <ion-input
-              class="custom-input"
-              label="Téléphone"
-              labelPlacement="floating"
-              formControlName="phoneNumber"
-              type="tel"
-              fill="outline"
-            ></ion-input>
-          </ion-item>
+        <ion-item class="input-item">
+          <ion-icon slot="start" name="call-outline"></ion-icon>
+          <ion-input
+            class="custom-input"
+            label="Téléphone"
+            labelPlacement="floating"
+            formControlName="phoneNumber"
+            type="tel"
+            fill="outline"
+          ></ion-input>
+        </ion-item>
 
-          <ion-item class="input-item">
-            <ion-icon slot="start" name="calendar-outline"></ion-icon>
-            <ion-input
-              class="custom-input"
-              label="Date de naissance"
-              labelPlacement="floating"
-              formControlName="birthDate"
-              type="date"
-              fill="outline"
-            ></ion-input>
-          </ion-item>
+        <ion-item class="input-item">
+          <ion-icon slot="start" name="calendar-outline"></ion-icon>
+          <ion-input
+            class="custom-input"
+            label="Date de naissance"
+            labelPlacement="floating"
+            formControlName="birthDate"
+            type="date"
+            fill="outline"
+          ></ion-input>
+        </ion-item>
 
-          <ion-item class="input-item">
-            <ion-icon slot="start" name="location-outline"></ion-icon>
-            <ion-input
-              class="custom-input"
-              label="Adresse"
-              labelPlacement="floating"
-              formControlName="address"
-              type="text"
-              fill="outline"
-            ></ion-input>
-          </ion-item>
-        </ion-list>
+        <ion-item class="input-item">
+          <ion-icon slot="start" name="location-outline"></ion-icon>
+          <ion-input
+            class="custom-input"
+            label="Adresse"
+            labelPlacement="floating"
+            formControlName="address"
+            type="text"
+            fill="outline"
+          ></ion-input>
+        </ion-item>
+      </ion-list>
 
-        <div class="ion-padding-top">
-          <ion-button
-            expand="block"
-            type="submit"
-            [disabled]="!form.valid || isLoading"
-          >
-            @if (isLoading) {
-              <ion-spinner></ion-spinner>
-            } @else {
-              Enregistrer
-            }
-          </ion-button>
-        </div>
-      </form>
-    </div>
+      <div class="ion-padding-top">
+        <app-submit-button [isLoading]="isLoading">Enregistrer</app-submit-button>
+      </div>
+    </form>
+  </div>
   }
 </ion-content>

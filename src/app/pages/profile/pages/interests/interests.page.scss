@@ -30,9 +30,10 @@
   background: white;
   border-radius: 24px;
   padding: 24px;
-  margin-top: 16px;
+  margin-top: 0;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.04),
     0 0px 1px rgba(0, 0, 0, 0.04);
+  margin-bottom: 80px;
 }
 
 // Compteur d'intérêts
@@ -83,7 +84,7 @@
     font-size: 14px;
   }
 
-  &[data-category='sports'] {
+  &[data-category-index='0'] {
     &.selected {
       --background: var(--ion-color-primary);
       --color: white;
@@ -91,7 +92,7 @@
     }
   }
 
-  &[data-category='culture'] {
+  &[data-category-index='1'] {
     &.selected {
       --background: var(--ion-color-secondary);
       --color: white;
@@ -99,7 +100,7 @@
     }
   }
 
-  &[data-category='music'] {
+  &[data-category-index='2'] {
     &.selected {
       --background: var(--ion-color-tertiary);
       --color: white;
@@ -107,7 +108,7 @@
     }
   }
 
-  &[data-category='food'] {
+  &[data-category-index='3'] {
     &.selected {
       --background: var(--ion-color-success);
       --color: white;
@@ -115,7 +116,7 @@
     }
   }
 
-  &[data-category='travel'] {
+  &[data-category-index='4'] {
     &.selected {
       --background: var(--ion-color-warning);
       --color: white;
@@ -135,3 +136,41 @@ ion-header {
       --padding-top: 8px;
     }
   }
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  
+  ion-spinner {
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 1000;
+
+  .save-button {
+    margin: 0;
+    --border-radius: 12px;
+    height: 48px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.button-spinner {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}

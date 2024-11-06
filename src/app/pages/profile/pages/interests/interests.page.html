@@ -12,43 +12,41 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  @if (allInterests.length > 0) {
   <div class="interests-container">
-    <!-- Compteur des intérêts sélectionnés -->
     <div class="interests-counter">
-      {{ selectedInterests.size }} intérêts sélectionnés
+      {{ selectedInterests.length }} intérêts sélectionnés
     </div>
 
-    <!-- Liste des catégories -->
-    @for (category of categories; track category) {
-      <div class="category-section">
-        <h2 class="category-title">{{ category | titlecase }}</h2>
-        
-        <div class="interests-grid">
-          @for (interest of getInterestsByCategory(category); track interest.id) {
-            <ion-chip
-              class="interest-chip"
-              [class.selected]="isSelected(interest.id)"
-              (click)="toggleInterest(interest.id)"
-              [attr.data-category]="category"
-            >
-              @if (interest.icon) {
-                <ion-icon [name]="interest.icon"></ion-icon>
-              }
-              <ion-label>{{ interest.name }}</ion-label>
-            </ion-chip>
-          }
-        </div>
-      </div>
-    }
+    @for (category of categories; track category; let i = $index) {
+    <div class="category-section">
+      <h2 class="category-title">{{ category | titlecase }}</h2>
 
-    <!-- Bouton de sauvegarde -->
-    <ion-button 
-      expand="block" 
-      class="save-button" 
-      (click)="saveInterests()"
-      [disabled]="selectedInterests.size === 0"
-    >
-      Enregistrer
-    </ion-button>
+      <div class="interests-grid">
+        @for (interest of getInterestsByCategory(category); track interest.name)
+        {
+        <ion-chip
+          class="interest-chip"
+          [class.selected]="isSelected(interest.name)"
+          [attr.data-category-index]="i"
+          (click)="toggleInterest(interest.name)"
+        >
+          <ion-label>{{ interest.name }}</ion-label>
+        </ion-chip>
+        }
+      </div>
+    </div>
+    }
   </div>
-</ion-content> 
+  } @else {
+  <div class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Chargement des centres d'intérêt...</p>
+  </div>
+  }
+</ion-content>
+
+<!-- Bouton flottant fixe en bas -->
+<div class="floating-button">
+  <app-submit-button (click)="saveInterests()" [isLoading]="isSaving">Enregistrer</app-submit-button>
+</div>

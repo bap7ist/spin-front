@@ -1,3 +1,5 @@
+import { Interest } from "./interest.model";
+
 export interface User {
   id: string;
   email: string;
@@ -7,7 +9,7 @@ export interface User {
   phoneNumber?: string;
   birthDate?: Date;
   address?: string;
-  interests?: string[];
+  interests?: Interest[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,14 +24,3 @@ export interface UserUpdate {
   address?: string;
   interests?: string[];
 }
-
-// Interface pour les intérêts
-export interface Interest {
-  id: string;
-  name: string;
-  icon?: string;
-  category: InterestCategory;
-}
-
-// Type pour les catégories d'intérêts
-export type InterestCategory = 'sports' | 'culture' | 'music' | 'food' | 'travel' | 'other';
