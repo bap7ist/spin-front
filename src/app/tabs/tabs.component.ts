@@ -9,7 +9,7 @@ import {
   IonAvatar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { homeOutline, heartOutline } from 'ionicons/icons';
+import { homeOutline, heartOutline, apps, heartHalf } from 'ionicons/icons';
 import { map } from 'rxjs/operators';
 import { UserStore } from '../core/stores/user.store';
 
@@ -34,6 +34,6 @@ export class TabsComponent {
   );
 
   constructor(private userStore: UserStore) {
-    addIcons({ homeOutline, heartOutline });
+    addIcons({apps,heartHalf,heartOutline,homeOutline});
   }
 }

@@ -7,6 +7,11 @@
   .login-header {
     margin: 60px 0 40px;
     text-align: center;
+
+    .logo {
+      width: 80px;
+      height: 80px;
+    }
     
     h1 {
       font-size: 32px;
@@ -31,6 +36,8 @@
       --padding-end: 16px;
       --highlight-height: 2px;
       font-size: 16px;
+      border: 1px solid var(--ion-color-medium);
+      border-radius: 12px;
     }
   }
 

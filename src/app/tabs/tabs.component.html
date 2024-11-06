@@ -1,15 +1,22 @@
 <ion-tabs>
-
   <ion-tab-bar slot="bottom">
     <ion-tab-button class="custom-tab" tab="feed" [routerLink]="['/tabs/feed']">
-      <ion-icon class="tab-icon" name="home-outline"></ion-icon>
+      <ion-icon name="apps"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button class="custom-tab" tab="swipe" [routerLink]="['/tabs/swipe']">
-      <ion-icon class="tab-icon" name="heart-outline"></ion-icon>
+    <ion-tab-button
+      class="custom-tab"
+      tab="swipe"
+      [routerLink]="['/tabs/swipe']"
+    >
+      <ion-icon name="heart-half"></ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button class="custom-tab" tab="profile" [routerLink]="['/tabs/profile']">
+    <ion-tab-button
+      class="custom-tab"
+      tab="profile"
+      [routerLink]="['/tabs/profile']"
+    >
       <ion-avatar>
         <img [src]="userPhotoUrl$ | async" alt="Profile" />
       </ion-avatar>

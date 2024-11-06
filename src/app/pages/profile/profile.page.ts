@@ -10,6 +10,8 @@ import {
   IonIcon,
   IonSkeletonText,
   ActionSheetController,
+  IonItem,
+  IonLabel,
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Observable, from } from 'rxjs';
@@ -22,11 +24,16 @@ import {
   image,
   trash,
   closeCircle,
+  personOutline,
+  heartOutline,
+  settingsOutline,
+  shieldOutline,
 } from 'ionicons/icons';
 import { FileService } from 'src/app/core/services/file.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { UserStore } from 'src/app/core/stores/user.store';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -34,6 +41,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonLabel,
+    IonItem,
     CommonModule,
     IonHeader,
     IonToolbar,
@@ -43,6 +52,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
     IonButton,
     IonIcon,
     IonSkeletonText,
+    RouterLink,
   ],
 })
 export class ProfilePage {
@@ -56,9 +66,13 @@ export class ProfilePage {
     private authService: AuthService
   ) {
     addIcons({
+      camera,
+      personOutline,
+      heartOutline,
+      settingsOutline,
+      shieldOutline,
       logOutOutline,
       createOutline,
-      camera,
       image,
       trash,
       closeCircle,

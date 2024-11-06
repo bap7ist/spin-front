@@ -1,0 +1,54 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <div class="back-button-container">
+        <ion-button class="custom-back-button" (click)="goBack()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-buttons>
+    <ion-title>Centres d'intérêt</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="interests-container">
+    <!-- Compteur des intérêts sélectionnés -->
+    <div class="interests-counter">
+      {{ selectedInterests.size }} intérêts sélectionnés
+    </div>
+
+    <!-- Liste des catégories -->
+    @for (category of categories; track category) {
+      <div class="category-section">
+        <h2 class="category-title">{{ category | titlecase }}</h2>
+        
+        <div class="interests-grid">
+          @for (interest of getInterestsByCategory(category); track interest.id) {
+            <ion-chip
+              class="interest-chip"
+              [class.selected]="isSelected(interest.id)"
+              (click)="toggleInterest(interest.id)"
+              [attr.data-category]="category"
+            >
+              @if (interest.icon) {
+                <ion-icon [name]="interest.icon"></ion-icon>
+              }
+              <ion-label>{{ interest.name }}</ion-label>
+            </ion-chip>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Bouton de sauvegarde -->
+    <ion-button 
+      expand="block" 
+      class="save-button" 
+      (click)="saveInterests()"
+      [disabled]="selectedInterests.size === 0"
+    >
+      Enregistrer
+    </ion-button>
+  </div>
+</ion-content> 

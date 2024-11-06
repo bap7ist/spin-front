@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, iosTransitionAnimation } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +9,6 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 })
 export class AppComponent {
   constructor() {}
+
+  protected iosTransitionAnimation = iosTransitionAnimation;
 }

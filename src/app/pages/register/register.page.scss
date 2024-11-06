@@ -13,7 +13,7 @@
   }
 
   .register-header {
-    margin: 40px 0;
+    margin: 1rem 0;
     text-align: center;
 
     h1 {
@@ -39,6 +39,8 @@
       --padding-end: 16px;
       --highlight-height: 2px;
       font-size: 16px;
+      border: 1px solid var(--ion-color-medium);
+      border-radius: 12px;
     }
   }
 

@@ -1,12 +1,35 @@
 export interface User {
-  id: string;           // Obligatoire - identifiant unique
-  email: string;        // Obligatoire - email de connexion
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar?: string;
+  phoneNumber?: string;
+  birthDate?: Date;
+  address?: string;
+  interests?: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Optionnel : Interface pour les mises à jour
+export interface UserUpdate {
   firstName?: string;
   lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  birthDate?: Date;
   address?: string;
-  phone?: string;
-  birthDate?: Date;     // Changé en Date
-  avatar?: string;
-  createdAt: Date;      // Ajouté - timestamp de création
-  updatedAt: Date;      // Ajouté - timestamp de mise à jour
+  interests?: string[];
 }
+
+// Interface pour les intérêts
+export interface Interest {
+  id: string;
+  name: string;
+  icon?: string;
+  category: InterestCategory;
+}
+
+// Type pour les catégories d'intérêts
+export type InterestCategory = 'sports' | 'culture' | 'music' | 'food' | 'travel' | 'other';
