@@ -3,6 +3,7 @@ import { HttpService } from './http.service';
 import { Observable } from 'rxjs';
 import { User, UserUpdate } from '../models/user.model';
 import { Interest } from '../models/interest.model';
+import { GradientOption } from './gradient.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +35,9 @@ export class UserService {
     return this.http.put<User>(`${this.endpoint}/me/interests`, {
       interests,
     });
+  }
+
+  updateGradient$(gradient: GradientOption): Observable<User> {
+    return this.http.put<User>(`${this.endpoint}/me/gradient`, gradient);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {
@@ -24,8 +24,7 @@ import {
   pizza,
   wine,
   airplane,
-  walk,
-} from 'ionicons/icons';
+  walk, checkmark } from 'ionicons/icons';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserService } from 'src/app/core/services/user.service';
 import { InterestsService } from 'src/app/core/services/interests.service';
@@ -59,6 +58,7 @@ export class InterestsPage implements OnInit {
   categories: string[] = [];
 
   public isSaving = false;
+  isButtonVisible = true;
 
   constructor(
     private readonly destroyRef: DestroyRef,
@@ -68,19 +68,7 @@ export class InterestsPage implements OnInit {
     private readonly interestsService: InterestsService,
     private readonly toastService: ToastService
   ) {
-    addIcons({
-      chevronBackOutline,
-      football,
-      basketball,
-      tennisball,
-      film,
-      musicalNotes,
-      restaurant,
-      pizza,
-      wine,
-      airplane,
-      walk,
-    });
+    addIcons({chevronBackOutline,checkmark,football,basketball,tennisball,film,musicalNotes,restaurant,pizza,wine,airplane,walk,});
   }
 
   public ngOnInit(): void {

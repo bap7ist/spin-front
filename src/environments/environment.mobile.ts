@@ -1,5 +1,5 @@
 // Nouvel environnement pour mobile
 export const environment = {
-  production: false,
-  apiUrl: 'https://spin-api-tjx5.onrender.com/api', // Pour l'iPhone
+  production: true,
+  apiUrl: 'https://spin-api-tjx5.onrender.com/api', // L'URL correcte
 };

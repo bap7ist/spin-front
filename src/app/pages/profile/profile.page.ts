@@ -36,6 +36,7 @@ import { UserStore } from 'src/app/core/stores/user.store';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { RouterLink } from '@angular/router';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { GradientService } from 'src/app/core/services/gradient.service';
 
 @Component({
   selector: 'app-profile',
@@ -63,13 +64,16 @@ export class ProfilePage {
 
   public isLoading = false;
 
+  gradient$ = this.gradientService.gradient$;
+
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private fileService: FileService,
     private userService: UserService,
     private userStore: UserStore,
     private authService: AuthService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private gradientService: GradientService
   ) {
     addIcons({
       camera,
@@ -176,5 +180,11 @@ export class ProfilePage {
 
   onLogout(): void {
     this.authService.logout();
+  }
+
+  onChangeGradient(): void {
+    console.log('clickyyyy');
+    
+    this.gradientService.openGradientPicker().subscribe();
   }
 }

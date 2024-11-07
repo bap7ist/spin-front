@@ -1,9 +1,15 @@
 <ion-content>
   <!-- Background gradient -->
-  <div class="profile-background"></div>
+  <div
+    class="profile-background"
+    [style.background]="gradient$ | async"
+  ></div>
 
   <!-- Main content -->
   <div class="profile-content">
+    <!-- Zone cliquable pour le gradient -->
+    <div class="gradient-click-zone" (click)="onChangeGradient()"></div>
+
     <!-- Profile card -->
     <div class="profile-card">
       <!-- Avatar section -->
@@ -15,7 +21,7 @@
           </div>
           } @else {
           <img
-            [src]="(user$ | async)?.avatar || 'assets/default-avatar.png'"
+            [src]="(user$ | async)?.avatar || 'https://ionicframework.com/docs/img/demos/avatar.svg'"
             alt="Profile"
           />
           <div class="avatar-overlay">

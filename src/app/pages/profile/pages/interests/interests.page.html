@@ -47,6 +47,13 @@
 </ion-content>
 
 <!-- Bouton flottant fixe en bas -->
-<div class="floating-button">
-  <app-submit-button (click)="saveInterests()" [isLoading]="isSaving">Enregistrer</app-submit-button>
+<div
+  class="floating-button"
+  [ngClass]="{'hidden': !isButtonVisible}"
+  (click)="saveInterests()"
+>
+  @if (isSaving) {
+  <ion-spinner></ion-spinner>
+  } @else {
+  <ion-icon name="checkmark"></ion-icon>}
 </div>

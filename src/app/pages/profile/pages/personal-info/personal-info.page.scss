@@ -1,8 +1,13 @@
+ion-content {
+  --background: var(--ion-color-primary-contrast);
+  position: absolute;
+}
+
 .form-card {
   background: white;
   border-radius: 24px;
   padding: 24px;
-  margin-top: 16px;
+  margin-top: 4rem;
   box-shadow: 
     0px 10px 20px rgba(0, 0, 0, 0.04),
     0px 2px 6px rgba(0, 0, 0, 0.04),
@@ -58,14 +63,6 @@ ion-list {
   padding-top: 24px;
 }
 
-// Optionnel : Ajouter un fond subtil à la page
-ion-content {
-  --background: linear-gradient(
-    135deg,
-    var(--ion-color-light) 0%,
-    var(--ion-background-color) 100%
-  );
-}
 
 .back-button-container {
   padding-left: 8px;
@@ -100,8 +97,7 @@ ion-content {
 
 ion-header {
   ion-toolbar {
-    --background: transparent;
-    --min-height: 56px;
-    --padding-top: 8px;
+    --background: var(--ion-color-primary-contrast);
+    --padding: 1rem;
   }
 }

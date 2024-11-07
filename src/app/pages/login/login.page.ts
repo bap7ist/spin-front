@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, EMPTY, finalize, mergeMap } from 'rxjs';
+import { catchError, EMPTY, finalize, mergeMap, take } from 'rxjs';
 import { 
   IonContent,
   IonInput,
@@ -62,12 +62,11 @@ export class LoginPage {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      
       this.authService.login(this.loginForm.value).pipe(
+        take(1),
         mergeMap(() => this.toastService.success('Connexion réussie !')),
-        catchError(() => EMPTY),
+        catchError((error) => this.toastService.error(error)),
         finalize(() => this.isLoading = false),
-        takeUntilDestroyed(this.destroyRef)
       ).subscribe(() => {
         this.router.navigate(['/tabs/feed']);
       });

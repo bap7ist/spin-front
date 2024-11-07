@@ -1,29 +1,27 @@
 ion-tab-bar {
-  --background: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  height: 80px;
+  background-color: var(--ion-color-primary-contrast);
 }
 
 ion-tab-button {
-  --color: #666666 !important;
-  --color-selected: #000000 !important;
-}
+  --background: var(--ion-color-primary-contrast);
 
-// Ciblage spécifique des icônes
-ion-tab-button {
-  ion-icon {
-    color: #666666;
+  ion-avatar {
+    width: 28px;
+    height: 28px;
+    margin: auto;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: 2px solid transparent; // Bordure transparente par défaut
+      transition: border-color 0.2s; // Animation optionnelle
+    }
   }
 
   &.tab-selected {
-    ion-icon {
-      color: #000000;
+    ion-avatar img {
+      border-color: var(--ion-color-primary); // Bordure colorée quand sélectionné
     }
   }
-}
-
-ion-avatar {
-  width: 24px;
-  height: 24px;
-  margin: auto;
 }

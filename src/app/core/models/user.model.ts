@@ -1,3 +1,4 @@
+import { GradientOption } from "../services/gradient.service";
 import { Interest } from "./interest.model";
 
 export interface User {
@@ -10,6 +11,7 @@ export interface User {
   birthDate?: Date;
   address?: string;
   interests?: Interest[];
+  gradient?: GradientOption;
   createdAt: Date;
   updatedAt: Date;
 }

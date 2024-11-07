@@ -10,7 +10,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "mobile": "ionic build --configuration mobile && ionic capacitor copy ios && ionic capacitor run ios"
+    "mobile": "ionic build --configuration=mobile && ionic capacitor copy ios && ionic capacitor run ios"
   },
   "private": true,
   "dependencies": {
