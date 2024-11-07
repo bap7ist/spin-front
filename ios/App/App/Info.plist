@@ -56,5 +56,11 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Nous avons besoin d'accéder à votre caméra pour prendre des photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nous avons besoin d'accéder à votre galerie pour sélectionner des photos.</string>
+	 <key>NSPhotoLibraryAddUsageDescription</key>
+   <string>Nous avons besoin d'accéder à votre bibliothèque de photos pour enregistrer des images.</string>
 </dict>
 </plist>

@@ -144,6 +144,7 @@ export class ProfilePage {
       .pipe(
         take(1),
         switchMap((image) => {
+          console.log('image', image);
           if (!image.dataUrl) {
             return throwError(() => 'Aucune image sélectionnée');
           }
