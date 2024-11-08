@@ -4,8 +4,8 @@ import { from, Observable, map, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import { UserService } from './user.service';
 import { UserStore } from '../stores/user.store';
-import { GradientPickerComponent } from 'src/app/components/gradient-picker/gradient-picker.component';
 import { gradients } from 'src/app/components/gradient-picker/gradients';
+import { GradientPickerComponent } from 'src/app/components/gradient-picker/gradient-picker.component';
 
 export interface GradientOption {
   id: string;

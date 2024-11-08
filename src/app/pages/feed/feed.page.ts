@@ -5,25 +5,30 @@ import {
   IonContent,
   IonHeader,
   IonTitle,
-  IonToolbar,
-} from '@ionic/angular/standalone';
+  IonToolbar, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { chatbubblesOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.page.html',
   styleUrls: ['./feed.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonIcon, IonFabButton, IonFab, 
     IonContent,
     IonHeader,
     IonTitle,
     IonToolbar,
     CommonModule,
     FormsModule,
+    RouterLink
   ],
 })
 export class FeedPage implements OnInit {
-  constructor() {}
+  constructor() {
+    addIcons({ chatbubblesOutline });
+  }
 
   ngOnInit() {
     console.log('FeedPage');

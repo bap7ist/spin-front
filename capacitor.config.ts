@@ -7,12 +7,9 @@ const config: CapacitorConfig = {
   server: {
     iosScheme: 'ionic',
     cleartext: true,
-    allowNavigation: [
-      'https://spin-api-tjx5.onrender.com'
-    ]
+    allowNavigation: ['https://spin-api-tjx5.onrender.com'],
   },
   ios: {
-    contentInset: 'automatic',
     preferredContentMode: 'mobile',
     limitsNavigationsToAppBoundDomains: true,
   },
@@ -23,8 +20,8 @@ const config: CapacitorConfig = {
       backgroundColor: '#ffffff',
       androidScaleType: 'CENTER_CROP',
       showSpinner: false,
-    }
-  }
+    },
+  },
 };
 
 export default config;

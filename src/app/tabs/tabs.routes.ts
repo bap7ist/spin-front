@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { TabsComponent } from './tabs.component';
 import { UserResolver } from '../core/resolvers/user.resolver';
+import { TabsComponent } from './tabs.component';
 
 export const routes: Routes = [
   {
@@ -12,8 +12,18 @@ export const routes: Routes = [
     children: [
       {
         path: 'feed',
-        loadComponent: () =>
-          import('../pages/feed/feed.page').then((m) => m.FeedPage),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('../pages/feed/feed.page').then((m) => m.FeedPage),
+          },
+          {
+            path: 'chat',
+            loadComponent: () =>
+              import('../pages/chat/chat.page').then((m) => m.ChatPage),
+          },
+        ],
       },
       {
         path: 'swipe',
@@ -40,9 +50,9 @@ export const routes: Routes = [
           {
             path: 'interests',
             loadComponent: () =>
-              import(
-                '../pages/profile/pages/interests/interests.page'
-              ).then((m) => m.InterestsPage),
+              import('../pages/profile/pages/interests/interests.page').then(
+                (m) => m.InterestsPage
+              ),
           },
         ],
       },

@@ -6,7 +6,7 @@
   );
 
   ion-content {
-    --background: white;
+    --background: var(--ion-color-primary-contrast);
   }
 
   .profile-background {
@@ -36,7 +36,7 @@
     border-radius: 24px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
     padding: 0;
-    margin-top: 12vh;
+    margin-top: 16vh;
     position: relative;
     z-index: 3;
     overflow: visible;

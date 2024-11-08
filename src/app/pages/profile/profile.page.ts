@@ -13,6 +13,8 @@ import {
   IonItem,
   IonLabel,
   IonSpinner,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Observable, from, throwError } from 'rxjs';
@@ -44,6 +46,8 @@ import { GradientService } from 'src/app/core/services/gradient.service';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
+    IonRefresherContent,
+    IonRefresher,
     IonSpinner,
     IonLabel,
     IonItem,
@@ -185,7 +189,7 @@ export class ProfilePage {
 
   onChangeGradient(): void {
     console.log('clickyyyy');
-    
+
     this.gradientService.openGradientPicker().subscribe();
   }
 }

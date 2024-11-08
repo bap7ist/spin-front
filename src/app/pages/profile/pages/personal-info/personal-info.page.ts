@@ -30,14 +30,14 @@ import {
   mailOutline,
   callOutline,
   locationOutline,
-  calendarOutline,
-} from 'ionicons/icons';
+  calendarOutline, lockClosedOutline } from 'ionicons/icons';
 import { Observable, catchError, finalize, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/models/user.model';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { SubmitButtonComponent } from "../../../../components/submit-button/submit-button.component";
+import { SubmitButtonComponent } from '../../../../components/submit-button/submit-button.component';
+import { UserStore } from 'src/app/core/stores/user.store';
 
 interface PersonalInfoForm {
   firstName: string;
@@ -70,8 +70,8 @@ interface PersonalInfoForm {
     IonButton,
     IonIcon,
     IonSpinner,
-    SubmitButtonComponent
-],
+    SubmitButtonComponent,
+  ],
 })
 export class PersonalInfoPage {
   form: FormGroup;
@@ -83,16 +83,10 @@ export class PersonalInfoPage {
     private readonly fb: FormBuilder,
     private readonly userService: UserService,
     private readonly router: Router,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private userStore: UserStore
   ) {
-    addIcons({
-      chevronBackOutline,
-      personOutline,
-      mailOutline,
-      callOutline,
-      locationOutline,
-      calendarOutline,
-    });
+    addIcons({chevronBackOutline,personOutline,mailOutline,lockClosedOutline,callOutline,calendarOutline,locationOutline,});
 
     this.initForm();
     this.loadUserData();
@@ -113,12 +107,15 @@ export class PersonalInfoPage {
     this.user$ = this.userService.getCurrentUser().pipe(
       tap((user) => {
         if (user) {
+          const formattedBirthDate = user.birthDate
+            ? new Date(user.birthDate).toISOString().split('T')[0]
+            : '';
           this.form.patchValue({
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             phoneNumber: user.phoneNumber,
-            birthDate: user.birthDate,
+            birthDate: formattedBirthDate,
             address: user.address,
           });
         }
@@ -142,9 +139,12 @@ export class PersonalInfoPage {
           takeUntilDestroyed(this.destroyRef),
           finalize(() => (this.isLoading = false)),
           catchError(() => this.toastService.error('Une erreur est survenue')),
-          switchMap(() =>
-            this.toastService.success('Informations mises à jour avec succès')
-          )
+          switchMap((user) => {
+            if (user) this.userStore.setUser(user);
+            return this.toastService.success(
+              'Informations mises à jour avec succès'
+            );
+          })
         )
         .subscribe();
     }
