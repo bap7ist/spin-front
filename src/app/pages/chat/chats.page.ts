@@ -31,8 +31,8 @@ interface Conversation {
 @Component({
   selector: 'app-chat',
   standalone: true,
-  templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss'],
+  templateUrl: './chats.page.html',
+  styleUrls: ['./chats.page.scss'],
   imports: [
     CommonModule,
     IonHeader,
@@ -53,7 +53,7 @@ interface Conversation {
     IonAvatar,
   ],
 })
-export class ChatPage implements OnInit {
+export class ChatsPage implements OnInit {
   conversations: Conversation[] = [];
   filteredConversations: Conversation[] = [];
   searchTerm: string = '';
@@ -200,7 +200,7 @@ export class ChatPage implements OnInit {
 
   openChat(conversationId: string) {
     // Logique pour ouvrir une conversation spécifique
-    console.log('Open chat with ID:', conversationId);
+    this.router.navigate(['tabs/feed/chat', conversationId]);
   }
 
   deleteConversation(conversationId: string) {

@@ -40,4 +40,12 @@ export class UserService {
   updateGradient$(gradient: GradientOption): Observable<User> {
     return this.http.put<User>(`${this.endpoint}/me/gradient`, gradient);
   }
+
+  getUserById$(id: string): Observable<User> {
+    return this.http.get<User>(`${this.endpoint}/${id}`);
+  }
+
+  getUsers$(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.endpoint}`);
+  }
 }

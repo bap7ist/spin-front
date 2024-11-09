@@ -4,16 +4,7 @@ import { TokenService } from './token.service';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginData, LoginResponse, RegisterData, RegisterResponse } from '../models/auth.model';
-import { User } from '../models/user.model';
 
-
-
-interface UserProfile {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-}
 
 @Injectable({
   providedIn: 'root',

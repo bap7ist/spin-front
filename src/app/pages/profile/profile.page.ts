@@ -31,6 +31,7 @@ import {
   heartOutline,
   settingsOutline,
   shieldOutline,
+  happyOutline,
 } from 'ionicons/icons';
 import { FileService } from 'src/app/core/services/file.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -83,9 +84,10 @@ export class ProfilePage {
       camera,
       personOutline,
       heartOutline,
-      settingsOutline,
+      happyOutline,
       shieldOutline,
       logOutOutline,
+      settingsOutline,
       createOutline,
       image,
       trash,

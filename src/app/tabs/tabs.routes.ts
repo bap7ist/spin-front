@@ -20,8 +20,20 @@ export const routes: Routes = [
           },
           {
             path: 'chat',
-            loadComponent: () =>
-              import('../pages/chat/chat.page').then((m) => m.ChatPage),
+            children: [
+              {
+                path: '',
+                loadComponent: () =>
+                  import('../pages/chat/chats.page').then((m) => m.ChatsPage),
+              },
+              {
+                path: ':id',
+                loadComponent: () =>
+                  import('../pages/chat/components/chat/chat.component').then(
+                    (m) => m.ChatComponent
+                  ),
+              },
+            ],
           },
         ],
       },
@@ -53,6 +65,13 @@ export const routes: Routes = [
               import('../pages/profile/pages/interests/interests.page').then(
                 (m) => m.InterestsPage
               ),
+          },
+          {
+            path: 'friend-requests',
+            loadComponent: () =>
+              import(
+                '../pages/profile/pages/friend-requests/friend-requests.page'
+              ).then((m) => m.FriendRequestsPage),
           },
         ],
       },

@@ -5,5 +5,28 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+  <ion-list>
+    @for (user of users; track user.id) {
+    <ion-card (click)="friendRequest(user.id)">
+      <ion-card-header>
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img
+              [src]="user.avatar || 'assets/default-avatar.png'"
+              alt="Avatar of {{ user.firstName }} {{ user.lastName }}"
+            />
+          </ion-avatar>
+          <ion-label>
+            <ion-card-title
+              >{{ user.firstName }} {{ user.lastName }}</ion-card-title
+            >
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Email: {{ user.email }}</p>
+      </ion-card-content>
+    </ion-card>
+    }
+  </ion-list>
 </ion-content>
