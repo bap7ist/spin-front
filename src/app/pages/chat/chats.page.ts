@@ -16,17 +16,18 @@ import {
   IonItemSliding,
   IonItemOption,
   IonButtons,
+  IonModal,
+  IonText,
 } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline, trashOutline } from 'ionicons/icons';
-
-interface Conversation {
-  id: string;
-  name: string;
-  avatarUrl: string;
-  lastMessage: string;
-}
+import { chevronBackOutline, trashOutline, addOutline } from 'ionicons/icons';
+import { ChatService } from 'src/app/core/services/chat.service';
+import { catchError, EMPTY, tap } from 'rxjs';
+import { Conversation } from 'src/app/core/models/chat.model';
+import { FriendService } from 'src/app/core/services/friend.service';
+import { UserStore } from 'src/app/core/stores/user.store';
+import { User } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-chat',
@@ -34,6 +35,8 @@ interface Conversation {
   templateUrl: './chats.page.html',
   styleUrls: ['./chats.page.scss'],
   imports: [
+    IonText,
+    IonModal,
     CommonModule,
     IonHeader,
     IonToolbar,
@@ -54,161 +57,97 @@ interface Conversation {
   ],
 })
 export class ChatsPage implements OnInit {
-  conversations: Conversation[] = [];
   filteredConversations: Conversation[] = [];
   searchTerm: string = '';
+  public friends: User[] = [];
 
-  public constructor(private router: Router) {
-    addIcons({ chevronBackOutline, trashOutline });
+  public isModalOpen = false;
+
+  public constructor(
+    private router: Router,
+    private chatService: ChatService,
+    private friendService: FriendService,
+    private userStore: UserStore
+  ) {
+    addIcons({ chevronBackOutline, addOutline, trashOutline });
   }
 
   ngOnInit() {
-    // Initialisation des conversations avec des données simulées
-    this.conversations = [
-      {
-        id: '1',
-        name: 'John Doe',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
-        lastMessage: 'Hey, how are you?',
-      },
-      {
-        id: '2',
-        name: 'Jane Smith',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/2.jpg',
-        lastMessage: "Let's catch up soon!",
-      },
-      {
-        id: '3',
-        name: 'Alice Johnson',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg',
-        lastMessage: 'Can you send me the report?',
-      },
-      {
-        id: '4',
-        name: 'Bob Brown',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/4.jpg',
-        lastMessage: 'Are you coming to the party?',
-      },
-      {
-        id: '5',
-        name: 'Charlie Davis',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/5.jpg',
-        lastMessage: 'I will call you later.',
-      },
-      {
-        id: '6',
-        name: 'Diana Evans',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/6.jpg',
-        lastMessage: 'Meeting at 3 PM.',
-      },
-      {
-        id: '7',
-        name: 'Ethan Foster',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/7.jpg',
-        lastMessage: 'Check your email.',
-      },
-      {
-        id: '8',
-        name: 'Fiona Green',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/8.jpg',
-        lastMessage: 'Happy Birthday!',
-      },
-      {
-        id: '9',
-        name: 'George Harris',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/9.jpg',
-        lastMessage: 'See you tomorrow.',
-      },
-      {
-        id: '10',
-        name: 'Hannah Ingram',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/10.jpg',
-        lastMessage: 'Thanks for your help.',
-      },
-      {
-        id: '11',
-        name: 'Ian Jackson',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
-        lastMessage: 'Let me know.',
-      },
-      {
-        id: '12',
-        name: 'Julia King',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
-        lastMessage: 'What do you think?',
-      },
-      {
-        id: '13',
-        name: 'Kevin Lewis',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/13.jpg',
-        lastMessage: 'I agree with you.',
-      },
-      {
-        id: '14',
-        name: 'Laura Martinez',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/14.jpg',
-        lastMessage: 'Can we reschedule?',
-      },
-      {
-        id: '15',
-        name: 'Michael Nelson',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/15.jpg',
-        lastMessage: 'I will be there soon.',
-      },
-      {
-        id: '16',
-        name: 'Nina Owens',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/16.jpg',
-        lastMessage: 'Let’s do it!',
-      },
-      {
-        id: '17',
-        name: 'Oscar Perez',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/17.jpg',
-        lastMessage: 'I am on my way.',
-      },
-      {
-        id: '18',
-        name: 'Paula Quinn',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/18.jpg',
-        lastMessage: 'Good luck!',
-      },
-      {
-        id: '19',
-        name: 'Quincy Roberts',
-        avatarUrl: 'https://randomuser.me/api/portraits/men/19.jpg',
-        lastMessage: 'See you later.',
-      },
-      {
-        id: '20',
-        name: 'Rachel Scott',
-        avatarUrl: 'https://randomuser.me/api/portraits/women/20.jpg',
-        lastMessage: 'Thank you!',
-      },
-    ];
-    this.filteredConversations = this.conversations;
+    this._loadConversations();
+    this._loadFriends();
+  }
+
+  onFriendSearch(event: any) {
+    const query = event.target.value.toLowerCase();
+    // Logic to search friends based on the query
+  }
+
+  createConversation(friend: User) {
+    console.log('friend', friend);
+    
+    this._saveFriendInfo(friend);
+    const roomId = `${this.userStore.getUser()?.id}-${friend.id}`;
+    this.router.navigate(['tabs/feed/chat', roomId]);
+  }
+
+  createNewMessage() {
+    this.router.navigate(['tabs/feed/chat/new']);
+  }
+
+  private _loadFriends() {
+    const user = this.userStore.getUser();
+    if (user?.id) {
+      this.friendService
+        .getFriends$(user.id)
+        .pipe(tap((friends) => (this.friends = friends)))
+        .subscribe();
+    }
+  }
+
+  private _loadConversations() {
+    this.chatService
+      .getConversations$()
+      .pipe(
+        tap((conversations) => (this.filteredConversations = conversations)),
+        catchError((error) => {
+          console.error('Error loading conversations', error);
+          return EMPTY;
+        })
+      )
+      .subscribe();
   }
 
   onSearchInput(event: any) {
     const term = event.target.value.toLowerCase();
-    this.filteredConversations = this.conversations.filter(
+    this.filteredConversations = this.filteredConversations.filter(
       (conversation) =>
-        conversation.name.toLowerCase().includes(term) ||
-        conversation.lastMessage.toLowerCase().includes(term)
+        conversation.participants[0]?.profile?.lastName
+          ?.toLowerCase()
+          .includes(term) ||
+        conversation.lastMessage?.toLowerCase().includes(term)
     );
   }
 
   openChat(conversationId: string) {
-    // Logique pour ouvrir une conversation spécifique
+    const friend = this.friends.find(
+      (friend) => friend.id === conversationId.split('-')[1]
+    );
+    if (friend) {
+      this._saveFriendInfo(friend);
+    }
     this.router.navigate(['tabs/feed/chat', conversationId]);
   }
 
+  private _saveFriendInfo(friend: User) {
+    this.userStore.setFriend(friend);
+  }
+
   deleteConversation(conversationId: string) {
-    this.conversations = this.conversations.filter(
-      (conversation) => conversation.id !== conversationId
+    this.filteredConversations = this.filteredConversations.filter(
+      (conversation) => conversation.roomId !== conversationId
     );
     this.filteredConversations = this.filteredConversations.filter(
-      (conversation) => conversation.id !== conversationId
+      (conversation) => conversation.roomId !== conversationId
     );
   }
 

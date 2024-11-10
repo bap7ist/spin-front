@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenService {
   private readonly TOKEN_KEY = 'auth_token';
@@ -21,4 +21,25 @@ export class TokenService {
   hasToken(): boolean {
     return !!this.getToken();
   }
-} 
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) {
+      return true;
+    }
+
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const payloadJson = atob(payloadBase64);
+      const payload = JSON.parse(payloadJson);
+
+      const expiry = payload.exp;
+      const now = Math.floor(new Date().getTime() / 1000);
+
+      return now > expiry;
+    } catch (e) {
+      console.error('Error decoding token:', e);
+      return true;
+    }
+  }
+}

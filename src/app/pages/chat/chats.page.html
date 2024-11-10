@@ -8,34 +8,81 @@
       </div>
     </ion-buttons>
     <ion-title>Messages</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="isModalOpen = true">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  @if (filteredConversations.length !== 0) {
   <ion-searchbar
     (ionInput)="onSearchInput($event)"
     placeholder="Rechercher"
   ></ion-searchbar>
+  } @else {
+  <ion-text>Aucune conversation trouvée</ion-text>
+  }
 
   <ion-list>
     <ion-item-sliding *ngFor="let conversation of filteredConversations">
-      <ion-item (click)="openChat(conversation.id)">
+      <ion-item (click)="openChat(conversation.roomId)">
         <ion-avatar slot="start">
-          <img [src]="conversation.avatarUrl" alt="Avatar" />
+          <img
+            [src]="conversation.participants[0].profile.avatar"
+            alt="Avatar"
+          />
         </ion-avatar>
         <ion-label>
-          <h2>{{ conversation.name }}</h2>
+          <h2>{{ conversation.participants[0].profile.firstName }}</h2>
           <p>{{ conversation.lastMessage }}</p>
         </ion-label>
       </ion-item>
       <ion-item-options side="end">
         <ion-item-option
           color="danger"
-          (click)="deleteConversation(conversation.id)"
+          (click)="deleteConversation(conversation.roomId)"
         >
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <!-- Modal for creating a new message -->
+  <ion-modal
+    [isOpen]="isModalOpen"
+    (didDismiss)="isModalOpen = false"
+    [breakpoints]="[0, 0.9, 1]"
+    [initialBreakpoint]="0.9"
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>New Message</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="isModalOpen = false">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-searchbar
+          (ionInput)="onFriendSearch($event)"
+          placeholder="Search friends"
+        ></ion-searchbar>
+        <ion-list>
+          @for (friend of friends; track friend.id) {
+          <ion-item (click)="createConversation(friend)">
+            <ion-avatar slot="start">
+              <img [src]="friend.avatar" alt="Avatar" />
+            </ion-avatar>
+            {{ friend.firstName }}
+          </ion-item>
+          }
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

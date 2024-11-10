@@ -1,6 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Chat</ion-title>
+    <ion-buttons slot="start">
+      <div class="back-button-container">
+        <ion-button class="custom-back-button" (click)="goBack()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-buttons>
+    <ion-title>{{ friend?.firstName }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,7 +15,13 @@
   <ion-list id="chat-box">
     @for (message of messages; track message) {
     <ion-item>
-      {{ message }}
+      <ion-avatar slot="start">
+        <img [src]="friend?.avatar || ''" alt="User Avatar" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ message.content }}</h2>
+        <p>{{ message.updatedAt | date : "shortTime" }}</p>
+      </ion-label>
     </ion-item>
     }
   </ion-list>

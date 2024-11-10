@@ -12,7 +12,7 @@ export class PublicGuard implements CanActivate {
   ) {}
 
   canActivate(): boolean {
-    if (!this.tokenService.hasToken()) {
+    if (!this.tokenService.hasToken() || this.tokenService.isTokenExpired()) {
       return true;
     }
 

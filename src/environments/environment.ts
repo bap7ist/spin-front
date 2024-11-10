@@ -1,7 +1,8 @@
 // Environnement par défaut (développement web)
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api'  // Pour ng serve
+  apiUrl: 'http://localhost:3000/api', // Pour ng serve
+  socketUrl: 'http://localhost:3000',
 };
 
 /*

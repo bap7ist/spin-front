@@ -16,9 +16,9 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   @if (friendRequests.length > 0) {
-  <ion-list>
+  <ion-list >
     @for (request of friendRequests; track request.request.id) {
-    <ion-card>
+    <ion-card @slideInFromTop>
       <ion-item lines="none">
         <ion-avatar slot="start">
           <img

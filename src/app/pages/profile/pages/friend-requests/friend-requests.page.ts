@@ -24,8 +24,8 @@ import {
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 import { catchError, EMPTY, finalize, take } from 'rxjs';
+import { slideInFromTop } from 'src/app/core/animations/slide-in-from-top.animation';
 import { FriendRequestProfile } from 'src/app/core/models/friend-request.model';
-import { User } from 'src/app/core/models/user.model';
 import { FriendService } from 'src/app/core/services/friend.service';
 
 @Component({
@@ -33,6 +33,7 @@ import { FriendService } from 'src/app/core/services/friend.service';
   templateUrl: './friend-requests.page.html',
   styleUrls: ['./friend-requests.page.scss'],
   standalone: true,
+  animations: [slideInFromTop],
   imports: [
     IonRow,
     IonText,
@@ -97,7 +98,7 @@ export class FriendRequestsPage implements OnInit {
       this.friendRequests.findIndex((request) => request.request.id === id),
       1
     );
-    this.friendService.acceptFriendRequest(id).subscribe();
+    this.friendService.acceptFriendRequest$(id).subscribe();
   }
 
   rejectRequest(id: string) {
@@ -105,6 +106,6 @@ export class FriendRequestsPage implements OnInit {
       this.friendRequests.findIndex((request) => request.request.id === id),
       1
     );
-    this.friendService.rejectFriendRequest(id).subscribe();
+    this.friendService.rejectFriendRequest$(id).subscribe();
   }
 }

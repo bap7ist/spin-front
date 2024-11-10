@@ -1,4 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   RouteReuseStrategy,
   provideRouter,
@@ -17,8 +18,9 @@ import { errorInterceptor } from './app/core/interceptors/error.interceptor';
 import { tokenInterceptor } from './app/core/interceptors/token.interceptor';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { importProvidersFrom } from '@angular/core';
+import { environment } from './environments/environment';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: environment.socketUrl, options: {} };
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -27,5 +29,6 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withInterceptors([errorInterceptor, tokenInterceptor])),
     importProvidersFrom(SocketIoModule.forRoot(config)),
+    provideAnimations(),
   ],
 });

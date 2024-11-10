@@ -57,7 +57,7 @@ export class SwipePage implements OnInit {
   }
 
   friendRequest(id: string) {
-    this.friendService.sendFriendRequest(id).subscribe((friendRequest) => {
+    this.friendService.sendFriendRequest$(id).subscribe((friendRequest) => {
       console.log(friendRequest);
     });
   }
