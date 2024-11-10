@@ -4,3 +4,10 @@ ion-header {
     --padding: 1rem;
   }
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}

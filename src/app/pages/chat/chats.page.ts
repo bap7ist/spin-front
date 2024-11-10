@@ -10,6 +10,7 @@ import {
   IonItemOptions,
   IonIcon,
   IonList,
+  IonSpinner,
   IonItem,
   IonLabel,
   IonAvatar,
@@ -23,17 +24,19 @@ import { Router, RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, trashOutline, addOutline } from 'ionicons/icons';
 import { ChatService } from 'src/app/core/services/chat.service';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, tap } from 'rxjs';
 import { Conversation } from 'src/app/core/models/chat.model';
 import { FriendService } from 'src/app/core/services/friend.service';
 import { UserStore } from 'src/app/core/stores/user.store';
 import { User } from 'src/app/core/models/user.model';
+import { slideInFromTop } from 'src/app/core/animations/slide-in-from-top.animation';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
   templateUrl: './chats.page.html',
   styleUrls: ['./chats.page.scss'],
+  animations: [slideInFromTop],
   imports: [
     IonText,
     IonModal,
@@ -52,6 +55,7 @@ import { User } from 'src/app/core/models/user.model';
     IonItem,
     IonLabel,
     IonItemSliding,
+    IonSpinner,
     IonItemOption,
     IonAvatar,
   ],
@@ -60,6 +64,7 @@ export class ChatsPage implements OnInit {
   filteredConversations: Conversation[] = [];
   searchTerm: string = '';
   public friends: User[] = [];
+  public isLoading: boolean = false;
 
   public isModalOpen = false;
 
@@ -84,7 +89,7 @@ export class ChatsPage implements OnInit {
 
   createConversation(friend: User) {
     console.log('friend', friend);
-    
+
     this._saveFriendInfo(friend);
     const roomId = `${this.userStore.getUser()?.id}-${friend.id}`;
     this.router.navigate(['tabs/feed/chat', roomId]);
@@ -105,6 +110,7 @@ export class ChatsPage implements OnInit {
   }
 
   private _loadConversations() {
+    this.isLoading = true;
     this.chatService
       .getConversations$()
       .pipe(
@@ -112,7 +118,8 @@ export class ChatsPage implements OnInit {
         catchError((error) => {
           console.error('Error loading conversations', error);
           return EMPTY;
-        })
+        }),
+        finalize(() => (this.isLoading = false))
       )
       .subscribe();
   }
@@ -121,7 +128,7 @@ export class ChatsPage implements OnInit {
     const term = event.target.value.toLowerCase();
     this.filteredConversations = this.filteredConversations.filter(
       (conversation) =>
-        conversation.participants[0]?.profile?.lastName
+        conversation.participants[0]?.lastName
           ?.toLowerCase()
           .includes(term) ||
         conversation.lastMessage?.toLowerCase().includes(term)
@@ -132,6 +139,7 @@ export class ChatsPage implements OnInit {
     const friend = this.friends.find(
       (friend) => friend.id === conversationId.split('-')[1]
     );
+    console.log('friend', friend);
     if (friend) {
       this._saveFriendInfo(friend);
     }

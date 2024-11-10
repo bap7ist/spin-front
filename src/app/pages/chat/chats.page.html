@@ -17,26 +17,31 @@
 </ion-header>
 
 <ion-content>
-  @if (filteredConversations.length !== 0) {
+  @if (isLoading) {
+  <div class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+  } @else { @if (filteredConversations.length !== 0) {
   <ion-searchbar
+    @slideInFromTop
     (ionInput)="onSearchInput($event)"
     placeholder="Rechercher"
   ></ion-searchbar>
   } @else {
   <ion-text>Aucune conversation trouvée</ion-text>
-  }
+  } }
 
-  <ion-list>
+  <ion-list @slideInFromTop>
     <ion-item-sliding *ngFor="let conversation of filteredConversations">
       <ion-item (click)="openChat(conversation.roomId)">
         <ion-avatar slot="start">
           <img
-            [src]="conversation.participants[0].profile.avatar"
+            [src]="conversation.participants[0].avatar"
             alt="Avatar"
           />
         </ion-avatar>
         <ion-label>
-          <h2>{{ conversation.participants[0].profile.firstName }}</h2>
+          <h2>{{ conversation.participants[0].firstName }}</h2>
           <p>{{ conversation.lastMessage }}</p>
         </ion-label>
       </ion-item>

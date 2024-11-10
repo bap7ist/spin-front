@@ -1,7 +1,7 @@
-import { User } from "./user.model";
+import { User } from './user.model';
 
 export interface Conversation {
   roomId: string;
-  participants: { id: string; profile: Partial<User> }[];
+  participants: Partial<User>[];
   lastMessage: string;
 }

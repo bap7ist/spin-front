@@ -16,9 +16,15 @@ import {
   IonButton,
   IonAvatar,
   IonLabel,
+  IonTextarea,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline, sendOutline } from 'ionicons/icons';
+import {
+  chevronBackOutline,
+  send,
+  sendOutline,
+  thumbsUpSharp,
+} from 'ionicons/icons';
 import { EMPTY, of, switchMap, tap, forkJoin, iif } from 'rxjs';
 import { Message, SendMessage } from 'src/app/core/models/message.model';
 import { User } from 'src/app/core/models/user.model';
@@ -46,6 +52,7 @@ import { UserStore } from 'src/app/core/stores/user.store';
     IonFooter,
     IonButton,
     ReactiveFormsModule,
+    IonTextarea,
     DatePipe,
   ],
 })
@@ -54,6 +61,8 @@ export class ChatComponent implements OnInit {
   public messages: Message[] = [];
 
   public friend: User | null = null;
+
+  public currentUser: User | null = null;
 
   public roomId: string;
 
@@ -65,12 +74,12 @@ export class ChatComponent implements OnInit {
     private userService: UserService,
     private userStore: UserStore
   ) {
-    addIcons({ chevronBackOutline, sendOutline });
+    addIcons({ chevronBackOutline, sendOutline, send, thumbsUpSharp });
   }
 
   ngOnInit() {
     this._initForm();
-
+    this.currentUser = this.userStore.getUser();
     this.route.paramMap
       .pipe(
         switchMap((params) => {
@@ -87,7 +96,7 @@ export class ChatComponent implements OnInit {
             const shouldFetchUser = this.friend === null;
             const user$ = iif(
               () => shouldFetchUser,
-              this.userService.getUserById$(this.roomId.split('-')[1]),
+              this.userService.getUserById$(this._getFriendId()),
               of(null)
             );
 
@@ -112,23 +121,41 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  private _getFriendId(): string {
+    const currentUserId = this.currentUser?.id;
+    const [firstId, secondId] = this.roomId.split('-');
+
+    return firstId === currentUserId ? secondId : firstId;
+  }
+
   private _initForm() {
     this.chatForm = this.fb.group({
       message: [''],
     });
   }
 
-  public onSubmit() {
-    const message = this.chatForm.get('message')?.value;
-    if (!message) return;
+  public sendThumbsUp() {
+    this._sendMessage('👍');
+  }
+
+  private _sendMessage(message: string) {
+    const senderId = this.userStore.getUser()?.id;
+    const receiverId = this.friend?.id;
+    if (!senderId || !receiverId) return;
     const sendMessage: SendMessage = {
       id: '',
-      senderId: this.roomId.split('-')[0],
-      receiverId: this.roomId.split('-')[1],
+      senderId: senderId,
+      receiverId: receiverId,
       content: message,
     };
     this.chatService.sendMessage(sendMessage);
-    console.log('Message envoyé:', message);
+    console.log('Message envoyé:', sendMessage);
+  }
+
+  public onSubmit() {
+    const message = this.chatForm.get('message')?.value;
+    if (!message) return;
+    this._sendMessage(message);
     this.chatForm.reset();
   }
 

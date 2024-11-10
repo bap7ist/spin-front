@@ -13,7 +13,8 @@
 
 <ion-content>
   <ion-list id="chat-box">
-    @for (message of messages; track message) {
+    @for (message of messages; track message) { @if (message.senderId ===
+    friend?.id) {
     <ion-item>
       <ion-avatar slot="start">
         <img [src]="friend?.avatar || ''" alt="User Avatar" />
@@ -23,18 +24,41 @@
         <p>{{ message.updatedAt | date : "shortTime" }}</p>
       </ion-label>
     </ion-item>
-    }
+    } @else {
+    <ion-item>
+      <ion-avatar slot="start">
+        <img [src]="currentUser?.avatar || ''" alt="User Avatar" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ message.content }}</h2>
+        <p>{{ message.updatedAt | date : "shortTime" }}</p>
+      </ion-label>
+    </ion-item>
+    } }
   </ion-list>
 </ion-content>
 
 <ion-footer>
-  <form [formGroup]="chatForm" (submit)="onSubmit()">
-    <ion-item>
-      <ion-input
+  <form [formGroup]="chatForm" (ngSubmit)="onSubmit()">
+    <div class="message-input-container">
+      <ion-textarea
         formControlName="message"
         placeholder="Écrire un message..."
-      ></ion-input>
-      <ion-button type="submit">Envoyer</ion-button>
-    </ion-item>
+        autoGrow="true"
+        inputmode="text"
+        rows="1"
+        class="message-textarea"
+      ></ion-textarea>
+      <ion-button
+        [type]="chatForm.get('message')?.value ? 'submit' : 'button'"
+        fill="clear"
+        class="send-button"
+        (click)="!chatForm.get('message')?.value && sendThumbsUp()"
+      >
+        <ion-icon
+          [name]="chatForm.get('message')?.value ? 'send' : 'thumbs-up-sharp'"
+        ></ion-icon>
+      </ion-button>
+    </div>
   </form>
 </ion-footer>
